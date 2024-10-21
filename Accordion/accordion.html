@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Accordion</title>
+        <style>
+            .accordion-item {
+                    width:90%;
+                    background: rgb(210, 208, 208);  
+                    &:hover {
+                        background-color: #adaaaa; 
+                    }
+            }
+
+            .accordion-description  {
+                padding-top:4px;
+                display:none;
+                background-color: white;     
+                }
+                .accordion-item .accordion-header  {
+                    padding: 15px;
+                    height:2rem;
+                    cursor: pointer;
+                }
+
+                .accordion-header .toggle-description {         
+                    border:none;
+                    background:transparent;
+                    float:right;
+                    font-size:1rem;
+                }
+
+                .active {      
+                    display: block;
+                    height:5rem;
+                    overflow:auto;
+                }
+        </style>
+    </head>
+    <body>
+       <section class="accordion-container">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                         Section 1
+                        <button class="toggle-description">+</button>
+                    </div>
+                    <div class="accordion-description active">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                            nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                            nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header"> 
+                        <span>Section 2</span>
+                        <button class="toggle-description">+</button> 
+                    </div>
+                    <div class="accordion-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                        nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header"> 
+                        <span>Section 3</span>
+                        <button class="toggle-description">+</button> 
+                    </div>
+                    <div class="accordion-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                        nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+       </section>   
+     
+
+        <script>
+             const accordionHeaders =  document.querySelectorAll(".accordion-header");
+             const accordionDescription = document.querySelectorAll('.accordion-description');
+
+             function toggleAccordionHeader() {
+
+                 const isAlreadyActive = this.nextElementSibling.classList.contains('active');
+
+                  accordionDescription.forEach(description => {
+                    description.classList.remove('active');
+                  });
+                  
+                 if(!isAlreadyActive) {
+                  this.nextElementSibling.classList.add('active');     
+                 }
+             }
+
+             accordionHeaders.forEach(header => {
+                header.addEventListener('click', toggleAccordionHeader);
+             });
+
+            
+        </script>
+    </body> 
+</html>

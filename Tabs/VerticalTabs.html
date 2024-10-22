@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Horizontal Tabs</title>
+        <style>
+            * {
+                margin:0;
+                padding:0;
+                box-sizing: border-box;
+            }
+
+            .tabs-container {
+               width:30rem;
+               height:35rem;
+               border:2px solid black;
+               margin:2rem;
+               display: flex;
+
+               
+            }        
+            #tab-header {
+                flex: 0 0 30%; 
+                background-color:rgb(241, 239, 239);
+                border-right:1px solid black;
+               
+            }
+            .list-container {
+                height: 100%;
+                list-style: none;             
+             }
+             .list-item {
+                padding: 1rem 0rem;
+             }
+
+             .list-item:not(.selected):hover {
+                background-color: rgb(226, 222, 222);
+             }
+
+             .selected {
+                background-color: gray;;
+             }
+
+             #tab-body {
+                flex: 0 0 70%; 
+                margin-right:20px;
+
+                h2 {
+                    margin:20px
+                }
+                p {
+                    margin:20px;
+                }
+             }
+        </style>
+    </head>
+    <body>
+         <div class="tabs-container">
+            <section id="tab-header">            
+            </section>
+            <section id="tab-body">
+            </section>
+        </div>
+
+        <script>
+             const API_URL = "http://127.0.0.1:5500/tabs/tab.json";
+             const tabHeader =  document.getElementById('tab-header');
+             const tabBody = document.getElementById('tab-body');
+             
+             let data = [];
+
+             const createTabBody = (tab) => {
+                tabBody.innerHTML = '';
+                const descriptionHeading = document.createElement('h2');
+                descriptionHeading.textContent = tab?.name || "";
+                tabBody.appendChild(descriptionHeading);
+               
+               const descriptionText= document.createElement('p');
+               descriptionText.textContent = tab?.description || "";
+               tabBody.appendChild(descriptionText);
+             }
+
+             const loadTabContainer = () => {
+                 const ulList =  document.createElement('ul');           
+                 ulList.classList.add('list-container');
+                
+                 (data || []).forEach((item, index) => {
+                   //added list item to header
+                   const liItem =  document.createElement('li');
+                   liItem.classList.add('list-item');
+                   liItem.textContent = item.name;
+                   liItem.id = item.id;
+
+                   if(index === 0) {
+                    liItem.classList.add('selected');
+                   }
+
+                   ulList.appendChild(liItem);
+                 });
+
+                tabHeader.appendChild(ulList);
+
+                createTabBody(data[0]);
+             }
+
+             const onTabClick = (e) => {
+                 if(!e.target.classList.contains('list-item')) {
+                    return;
+                 }
+
+                 const allTabs = document.querySelectorAll('.list-item');
+                 allTabs.forEach(tab => tab.classList.remove('selected'));
+
+                 e.target.classList.add('selected');
+                 const selectedTab = data.find(item => item.id === +e.target.id);
+                 createTabBody(selectedTab);
+             }
+  
+              window.addEventListener('DOMContentLoaded', async () =>  {
+                   
+                try {
+                    const response =  await fetch(API_URL);
+                    console.log(response);
+                    data =  await response.json();
+                } catch(ex) {
+                    console.log(ex);
+                } finally {
+                     loadTabContainer(data);
+                }
+              });
+
+              tabHeader.addEventListener('click', onTabClick);
+
+        </script>
+    </body>
+</html>

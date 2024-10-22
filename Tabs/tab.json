@@ -1,0 +1,17 @@
+[
+    {
+        "id":1,
+        "name": "London",
+        "description":"I am London"
+    },
+    {
+        "id":2,
+        "name": "Paris",
+        "description":"I am Paris"
+    },
+    {
+        "id":3,
+        "name": "Tokyo",
+        "description":"I am Tokyo"
+    }
+]

@@ -1,0 +1,26 @@
+    [
+        {
+            "tabName":"London",
+            "content": "London is the capital of England",
+            "id":1,
+            "color":"red"
+        },
+        {
+            "tabName":"Paris",
+            "content": "Paris is the capital of England",
+            "id":2,
+            "color":"green"
+        },
+        {
+            "tabName":"Tokyo",
+            "content": "Tokyo is the capital of England",
+            "id":3,
+            "color":"blue"
+        },
+        {
+            "tabName":"Oslo",
+            "content": "Oslo is the capital of England",
+            "id":4,
+            "color":"orange"
+        }
+    ]

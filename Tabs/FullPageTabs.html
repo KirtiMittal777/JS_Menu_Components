@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tab Header</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding:0;
+            box-sizing: border-box;
+        }
+
+        #tab-container {
+            height:100vh;
+            width:100vw;
+            display: flex;
+            flex-direction: column;
+        }
+        #tab-header {
+            flex: 0 0 7%;
+            display: flex;
+            align-items: stetch;
+
+           
+             ul {
+                display: flex;
+                flex:1;
+                list-style: none;
+            
+                li {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;              
+                }
+             }
+        }
+        #tab-body {
+            flex: 0 0 93%;
+            display: flex;
+            flex-direction: column;
+            gap:20px;
+            padding:3.5rem;
+        }
+
+    
+    </style>
+    <body>
+        <section id="tab-container">
+            <section id="tab-header"></section>
+            <section id="tab-body"></section>
+        </section>
+
+        <script>
+              const tabContainer = document.getElementById('tab-container');
+              const tabHeader = document.getElementById('tab-header');
+              const tabBody = document.getElementById('tab-body');
+
+              const API_URL = "http://127.0.0.1:5500/tabs/TabHeaders.json";
+
+              let data = [];
+
+              const appendItem = (element, childElement) => {
+                element.appendChild(childElement);
+              }
+
+              const createHeader = () => {
+                const ulList = document.createElement('ul');
+                ulList.id = 'list-wrapper';
+                  
+                  (data || []).forEach((item, index) => {
+                    const liItem =  document.createElement('li');
+                    liItem.textContent = item.tabName;
+                    liItem.classList.add('list-item');
+                    liItem.id= item.id;
+                    liItem.dataset.color = item.color;
+
+                    appendItem(ulList, liItem);
+                  });
+                  appendItem(tabHeader, ulList);
+              }
+
+              const createBody = (tab) => {
+                
+                tabBody.innerHTML = '';
+
+                const heading = document.createElement('h3');
+                const description = document.createElement('p');
+
+                heading.textContent = tab.tabName;
+                description.textContent = tab.content;
+
+                tabBody.style.backgroundColor = tab.color;
+                tabBody.style.color='white';
+                
+                appendItem(tabBody,heading );
+                appendItem(tabBody, description);
+              }
+
+              const applyBackgroundColor = (tab) => {
+                  const liItems  = document.querySelector('#list-wrapper').children;
+                  const selectedLi = Array.from(liItems).find(li => +li.id === +tab.id);
+                  Array.from(liItems).forEach(li => li.style.backgroundColor = 'gray');
+                  if(selectedLi)  {
+                    selectedLi.style.backgroundColor = selectedLi.dataset.color;
+                  }
+
+              }
+
+              const createTabData = () => {
+                createHeader();
+                applyBackgroundColor(data[0]);
+                createBody(data[0]);
+              }
+
+              const fetchTabData = async() => {
+                 try {
+                  const response =  await fetch(API_URL);
+                   data =  await response.json();
+                 } catch(ex) {
+                    console.log(ex);
+                 } finally {
+                    createTabData();
+                 }
+              }
+
+              const onTabClick = (e) => {
+                 if(!e.target.classList.contains('list-item')) {
+                    return;
+                 }
+                const selectedTab =  data.find(item => item.id === +e.target.id); 
+                applyBackgroundColor(selectedTab);
+                createBody(selectedTab);
+              }
+
+              tabHeader.addEventListener('click', onTabClick)
+              window.addEventListener('DOMContentLoaded', fetchTabData);
+        </script>
+    </body>
+</html>
